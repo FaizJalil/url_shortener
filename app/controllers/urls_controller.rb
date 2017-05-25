@@ -1,9 +1,9 @@
 class UrlsController < ApplicationController
-  def index
+  def index #this is the home page. Display all items in database here
     @urls = Url.all
   end
 
-  def show
+  def show #show the desired long url and shortened url
     @url = Url.find(params[:id])
   end
 
@@ -12,6 +12,7 @@ class UrlsController < ApplicationController
   end
 
   def create
+    byebug
     @url = Url.new(url_params)
     @url.shorten
     if @url.save
@@ -19,12 +20,20 @@ class UrlsController < ApplicationController
     else
       render 'new'
     end
+  end
 
-    def destroy
-      @url = Url.find(params[:id])
-      @url.destroy
-      redirect_to urls_path
-    end 
+
+  def destroy
+    @url = Url.find(params[:id])
+    @url.destroy
+    redirect_to urls_path
+  end
+
+  def short
+    url = Url.find(params[:id])
+    redirect_to url.long_url
+  end
+
 
     private
     def url_params
